@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeepSeek-tan · 大肥鱼 | 导入 Codex 宠物</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+    body { max-width: 680px; margin: 0 auto; padding: 48px 20px; line-height: 1.6; }
+    h1 { line-height: 1.2; }
+    .button { display: inline-block; padding: 10px 18px; border-radius: 8px; background: #1769e0; color: white; text-decoration: none; font-weight: 600; }
+    .button:hover { background: #0959cc; }
+    .card { border: 1px solid #8886; border-radius: 12px; padding: 20px; margin: 16px 0; }
+    .muted { opacity: .7; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>DeepSeek-tan · 大肥鱼</h1>
+    <p>选择一个版本，在 Codex 中导入动画宠物。</p>
+
+    <section id="selected" class="card" hidden>
+      <h2 id="selected-name"></h2>
+      <p id="status">正在尝试打开 Codex 导入流程…</p>
+      <a id="install-link" class="button" href="#">打开 Codex 导入</a>
+      <p class="muted">如果没有自动打开，请点击上方按钮。Codex 可能会要求你确认导入。</p>
+      <p><a id="package-link" href="#">下载原生导入包</a></p>
+    </section>
+
+    <section id="choices">
+      <div class="card">
+        <h2>大肥鱼</h2>
+        <p>蓝发鲸鱼女仆，原比例版。</p>
+        <a class="button" href="?pet=big-fish">导入原比例版</a>
+        <p><a href="https://raw.githubusercontent.com/gogohan9527-ux/harness-pet-deepseek-tan/main/downloads/big-fish-codex-pet.zip">下载原生导入包</a></p>
+      </div>
+      <div class="card">
+        <h2>大肥鱼·Q版</h2>
+        <p>蓝白裙装、大眼睛和鲸鱼尾巴的 Q 版形象。</p>
+        <a class="button" href="?pet=big-fish-Q">导入 Q 版</a>
+        <p><a href="https://raw.githubusercontent.com/gogohan9527-ux/harness-pet-deepseek-tan/main/downloads/big-fish-Q-codex-pet.zip">下载原生导入包</a></p>
+      </div>
+    </section>
+
+    <p class="muted">需要支持 Pets 的 Codex 桌面应用。<a href="https://github.com/gogohan9527-ux/harness-pet-deepseek-tan">查看仓库与精灵图</a></p>
+  </main>
+  <script>
+    const variants = {
+      "big-fish": {
+        name: "大肥鱼",
+        description: "蓝发鲸鱼女仆，按原图比例绘制。",
+        imageUrl: "https://raw.githubusercontent.com/gogohan9527-ux/harness-pet-deepseek-tan/main/pets/big-fish/spritesheet.png",
+        packageUrl: "https://raw.githubusercontent.com/gogohan9527-ux/harness-pet-deepseek-tan/main/downloads/big-fish-codex-pet.zip"
+      },
+      "big-fish-Q": {
+        name: "大肥鱼·Q版",
+        description: "蓝发鲸鱼女仆的 Q 版形象。",
+        imageUrl: "https://raw.githubusercontent.com/gogohan9527-ux/harness-pet-deepseek-tan/main/pets/big-fish-Q/spritesheet.png",
+        packageUrl: "https://raw.githubusercontent.com/gogohan9527-ux/harness-pet-deepseek-tan/main/downloads/big-fish-Q-codex-pet.zip"
+      }
+    };
+
+    const pet = variants[new URLSearchParams(location.search).get("pet")];
+    if (pet) {
+      const installUrl = new URL("codex://pets/install");
+      installUrl.searchParams.set("name", pet.name);
+      installUrl.searchParams.set("imageUrl", pet.imageUrl);
+      installUrl.searchParams.set("description", pet.description);
+      installUrl.searchParams.set("spriteVersionNumber", "2");
+
+      document.getElementById("selected-name").textContent = pet.name;
+      document.getElementById("install-link").href = installUrl.href;
+      document.getElementById("package-link").href = pet.packageUrl;
+      document.getElementById("selected").hidden = false;
+      document.getElementById("choices").hidden = true;
+      location.href = installUrl.href;
+    }
+  </script>
+</body>
+</html>
